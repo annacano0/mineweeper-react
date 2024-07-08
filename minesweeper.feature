@@ -28,8 +28,8 @@ Feature: Minesweeper
   To define the board display will use:
     COVERED CELLS
       "." Hidden cell
-      "!" Cell tagged has mined cell by the user
-      "x" Cell wrongly tagged has no mined cell by the user
+      "!" Cell tagged has mined cell by the player
+      "x" Cell wrongly tagged has no mined cell by the player
     UNCOVERED CELLS
       "0" Empty cell
       "1" Clean cell with 1 adjacent mine
@@ -81,19 +81,20 @@ Given the player loads the following mock data:
   | * | o | * |
   """
 When the player clicks left on cell (2,2) 
-Then the cell "<uncoveredCell>" should show: empty
+Then the cell "<adyacentEmpty>" should show: "<number>"
 
 Examples:
-| uncoveredCell |
-|         (1,1) |
-|         (1,2) |
-|         (1,3) |
-|         (2,1) |
-|         (2,3) |
-|         (3,1) |
-|         (3,2) |
-|         (3,3) |
-|         (4,2) |
+| adyacentEmpty | number |
+|         (1,1) |      0 |
+|         (1,2) |      0 |
+|         (1,3) |      0 |
+|         (2,1) |      0 |
+|         (2,3) |      0 |
+|         (3,1) |      1 |
+|         (3,2) |      0 |
+|         (3,3) |      1 |
+|         (4,2) |      2 |
+
 
 Scenario Outline: Uncovering cell with mine  - Displaying mine
 Given the player loads the following mock data:  """
@@ -103,6 +104,7 @@ Given the player loads the following mock data:  """
   """
 When the player clicks left on cell (2,2) 
 Then the cell should show: "@"
+And player loses
 
 
 Scenario Outline: Tagging cells with mine
@@ -112,18 +114,18 @@ Given the following mock data:
   | o | * | o |
   | o | o | o |
   """
-When the user flags the cell (2,2) 
+When the player flags the cell (2,2) 
 Then The cell should show : "!"
 
 
-Scenario Outline: Tagging cells no with mine
+Scenario Outline: Tagging cells with no mine
 Given the following mock data: 
   """
   | o | o | * |
   | o | o | o |
   | * | o | o |
   """
-When the user flags the cell (2,2) 
+When the player flags the cell (2,2) 
 Then The cell should show : "x"
 
 
@@ -142,7 +144,7 @@ Examples:
 
 Scenario Outline: Tagging cells with no mine - Substracting to flag counter
 Given the following mock data: "<boardData>"
-When the user tags the cell (2,2) 
+When the player tags the cell (2,2) 
 Then The cell should show : "x"
 And counter should show: "<flagCounter>"
 
@@ -161,7 +163,7 @@ Examples:
 
 Scenario Outline: Untagging cells - Adding to flagCounter
 Given the following mock data: "<boardData>"
-When the user untags the cell (2,2) 
+When the player untags the cell (2,2) 
 Then The display should show : "."
 And counter should show: "<flagCounter>"
 
@@ -173,40 +175,43 @@ Examples:
 | *o*-ooo-o*o |            3 | 
 
 
+Scenario Outline: Winning the game
+Given the player has uncovered all empty cells
+Then player wins
+
 #---------- scenarios ----------
 Scenario: Game starts - By uncovering a cell
-Given the user reveals a cell
+Given the player reveals a cell
 Then cells should be covered
 And all cells should be enabled
 And the timer should start
 And smiley icon should be happy
-#flag counter is set to ...?
+
 
 Scenario: Game starts - By tagging a cell
-Given the user reveals a cell
+Given the player reveals a cell
 Then cells should be covered
 And all cells chould be enabled
 And the timer should start
 And smiley icon should be happy
-#flag counter is set to ...?
 
-Scenario: User loses
+
+Scenario: Game ends - By player losing
 Then mines are uncovered 
 And all cells should be disabled
 And timer should stop
 And smiley icon should change to sad
-And "x" cells should be disabled
-#flag counter ?
 
-Scenario: User wins
+
+Scenario: Game ends - By player winning
 Then all cells should be disabled
 And timer should stop
 And smiley icon should change to sunglases
 
+
 Scenario Outline: Initializing game
 Given the player clicks on smiley icon
 Then timer should be "000"
-And flag counter should be "010"
 
 
 Scenario: Cell is tagged
