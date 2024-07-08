@@ -144,7 +144,7 @@ Examples:
 
 Scenario Outline: Tagging cells with no mine - Substracting to flag counter
 Given the following mock data: "<boardData>"
-When the player tags the cell (2,2) 
+When the player clicks right the cell (2,2) 
 Then The cell should show : "x"
 And counter should show: "<flagCounter>"
 
@@ -163,7 +163,7 @@ Examples:
 
 Scenario Outline: Untagging cells - Adding to flagCounter
 Given the following mock data: "<boardData>"
-When the player untags the cell (2,2) 
+When the player clicks right on the cell (2,2) 
 Then The display should show : "."
 And counter should show: "<flagCounter>"
 
@@ -210,17 +210,21 @@ And "smileyIcon" status should change to "victory"
 
 
 Scenario Outline: Initializing game
-Given the player clicks on "smileyIcon" button
+Given the player presses on "smileyIcon" button
 Then timer should be "000"
 And all cells should be enabled
 And all cells should be covered
 
 
 Scenario: Cell is tagged
+Given cell is "!"
 Then cell should be disabled
 
 Scenario: Cell is untagged
+Given cell is "x"
+And player clicks right on cell
 Then cell should be enabled
 
 Scenario: Cell is uncovered
+Given cell is uncovered
 Then cell should be disabled
