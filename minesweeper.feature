@@ -72,32 +72,32 @@ Given the player loads the following mock data:
 When the player clicks left on cell (2,2) 
 Then the cell should show: empty
 
+#esto no explica bien la recursividad
 Scenario Outline: Uncovering cell with no mine or mines arround - Displaying sorrounding empty cells
-Given the player loads the following mock data:
+Given the player loads the following mock data: "<boardData>"
   """
   | o | o | o |
   | o | o | o |
-  | o | o | o |
-  | * | o | * |
+  | o | * | o |
   """
-When the player clicks left on cell (2,2) 
-Then the cell "<adyacentEmpty>" should show: "<number>"
+When the player clicks left on cell "<cell>"
+Then the sorrounding empty cells should uncover : "<adjacentEmpty>"
 
 Examples:
-| adyacentEmpty | number |
-|         (1,1) |      0 |
-|         (1,2) |      0 |
-|         (1,3) |      0 |
-|         (2,1) |      0 |
-|         (2,3) |      0 |
-|         (3,1) |      1 |
-|         (3,2) |      0 |
-|         (3,3) |      1 |
-|         (4,2) |      2 |
+| cell |                   adjacentEmpty                  |
+| (1,1)|                              (1,2), (1,3), (2,2) | 
+| (1,2)|                (1,1), (1,3), (2,1), (2,2), (2,3) | 
+| (1,3)|                              (1,2), (2,2), (2,3) | 
+| (2,1)|                       (1,1), (1,2), (2,2), (3,1) | 
+| (2,2)|  (1,1), (1,2), (1,3), (2,1), (2,3), (3,1), (3,3) | 
+| (2,3)|                       (1,2), (1,3), (2,2), (3,3) | 
+| (3,1)|                                     (2,1), (2,2) | 
+| (3,3)|                                     (2,2), (2,3) | 
 
 
 Scenario Outline: Uncovering cell with mine  - Displaying mine
-Given the player loads the following mock data:  """
+Given the player loads the following mock data:  
+  """
   | o | o | o |
   | o | * | o |
   | o | o | o |
@@ -114,7 +114,7 @@ Given the following mock data:
   | o | * | o |
   | o | o | o |
   """
-When the player taggs the cell (2,2) 
+When the player clicks right on the cell (2,2) 
 Then The cell should show : "!"
 
 
@@ -125,13 +125,13 @@ Given the following mock data:
   | o | o | o |
   | * | o | o |
   """
-When the player taggs the cell (2,2) 
+When the player clicks right on the cell (2,2) 
 Then The cell should show : "x"
 
 
 Scenario Outline: Running timer
 Given Seconds passed from game start is "seconds"
-Then the timer should show the following value "<timerDisplay>"
+Then the timer should show "<timerDisplay>"
 
 Examples: 
 | seconds | timerDisplay |
@@ -179,7 +179,7 @@ Scenario Outline: Winning the game
 Given the player has uncovered all empty cells
 Then player wins
 
-#---------- scenarios ----------
+#---------- scenarios ----------#
 Scenario: Game starts - By uncovering a cell
 Given the player reveals a cell
 Then cells should be covered
@@ -189,7 +189,7 @@ And "smileyIcon" status should change to "normal"
 
 
 Scenario: Game starts - By tagging a cell
-Given the player reveals a cell
+Given the player taggs a cell
 Then cells should be covered
 And all cells chould be enabled
 And the timer should start
@@ -217,4 +217,10 @@ And all cells should be covered
 
 
 Scenario: Cell is tagged
+Then cell should be disabled
+
+Scenario: Cell is untagged
+Then cell should be enabled
+
+Scenario: Cell is uncovered
 Then cell should be disabled
