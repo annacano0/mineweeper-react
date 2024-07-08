@@ -114,7 +114,7 @@ Given the following mock data:
   | o | * | o |
   | o | o | o |
   """
-When the player flags the cell (2,2) 
+When the player taggs the cell (2,2) 
 Then The cell should show : "!"
 
 
@@ -125,7 +125,7 @@ Given the following mock data:
   | o | o | o |
   | * | o | o |
   """
-When the player flags the cell (2,2) 
+When the player taggs the cell (2,2) 
 Then The cell should show : "x"
 
 
@@ -185,7 +185,7 @@ Given the player reveals a cell
 Then cells should be covered
 And all cells should be enabled
 And the timer should start
-And smiley icon should be happy
+And "smileyIcon" status should change to "normal"
 
 
 Scenario: Game starts - By tagging a cell
@@ -193,25 +193,27 @@ Given the player reveals a cell
 Then cells should be covered
 And all cells chould be enabled
 And the timer should start
-And smiley icon should be happy
+And "smileyIcon" status should change to "normal"
 
 
 Scenario: Game ends - By player losing
 Then mines are uncovered 
 And all cells should be disabled
 And timer should stop
-And smiley icon should change to sad
+And "smileyIcon" status should change to "defeat"
 
 
 Scenario: Game ends - By player winning
 Then all cells should be disabled
 And timer should stop
-And smiley icon should change to sunglases
+And "smileyIcon" status should change to "victory"
 
 
 Scenario Outline: Initializing game
-Given the player clicks on smiley icon
+Given the player clicks on "smileyIcon" button
 Then timer should be "000"
+And all cells should be enabled
+And all cells should be covered
 
 
 Scenario: Cell is tagged
