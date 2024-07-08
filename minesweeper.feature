@@ -80,8 +80,9 @@ Given the player loads the following mock data: "<boardData>"
   | o | o | o |
   | o | * | o |
   """
-When the player clicks left on cell "<cell>"
-Then the sorrounding empty cells should uncover : "<adjacentEmpty>"
+When the player clicks left on cell "<cell>" 
+Then the cell should show: empty
+And the sorrounding empty cells should uncover : "<adjacentEmpty>"
 
 Examples:
 | cell |                   adjacentEmpty                  |
@@ -175,11 +176,20 @@ Examples:
 | *o*-ooo-o*o |            3 | 
 
 
+#---------- general scenarios  ----------#
+
+Scenario Outline: Initializing game
+Given the player presses on "smileyIcon" button
+Then timer should be "000"
+And all cells should be enabled
+And all cells should be covered
+
+
 Scenario Outline: Winning the game
 Given the player has uncovered all empty cells
 Then player wins
 
-#---------- scenarios ----------#
+
 Scenario: Game starts - By uncovering a cell
 Given the player reveals a cell
 Then cells should be covered
@@ -204,26 +214,22 @@ And "smileyIcon" status should change to "defeat"
 
 
 Scenario: Game ends - By player winning
-Then all cells should be disabled
+Then mines are tagged 
+And all cells should be disabled
 And timer should stop
 And "smileyIcon" status should change to "victory"
 
 
-Scenario Outline: Initializing game
-Given the player presses on "smileyIcon" button
-Then timer should be "000"
-And all cells should be enabled
-And all cells should be covered
-
-
 Scenario: Cell is tagged
-Given cell is "!"
+Given cell display is "!"
 Then cell should be disabled
 
+
 Scenario: Cell is untagged
-Given cell is "x"
+Given cell display is "x"
 And player clicks right on cell
 Then cell should be enabled
+
 
 Scenario: Cell is uncovered
 Given cell is uncovered
