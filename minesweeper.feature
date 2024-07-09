@@ -143,37 +143,57 @@ Examples:
 |    1000 |          999 |
 
 
-Scenario Outline: Tagging cells with no mine - Substracting to flag counter
+Scenario Outline: Tagging cells - Substracting to flag counter
 Given the following mock data: "<boardData>"
 When the player clicks right the cell (2,2) 
-Then The cell should show : "x"
-And counter should show: "<flagCounter>"
+Then The counter should show: "<flagCounter>"
+And the display should show: "<boardDisplay>"
 
 Examples: 
-|  boardData  |  flagCounter |
-| ooo-ooo-ooo |           -1 | 
-| *oo-ooo-ooo |            0 | 
-| *oo-ooo-oo* |            1 | 
-| *o*-ooo-o*o |            2 | 
-| ***-*oo-ooo |            3 | 
-| ***-*o*-ooo |            4 | 
-| ***-*o*-*oo |            5 | 
-| ***-*o*-**o |            6 | 
-| ***-*o*-*** |            7 | 
+|  boardData  | boardDisplay | flagCounter |
+| ooo-ooo-ooo |  ...-...-... | -1 | 
+| *oo-ooo-ooo |  ...-.x.-... |  0 | 
+| ooo-o*o-ooo |  ...-.!.-... |  0 | 
+| *oo-o*o-oo* |  ...-.!.-... |  2 | 
+| *o*-ooo-o*o |  ...-.x.-... |  2 | 
+| ***-*oo-ooo |  ...-.x.-... |  3 | 
 
+
+Scenario Outline: Untagging cells with mine
+Given the following mock data: 
+  """
+  | o | o | o |
+  | o | * | o |
+  | o | o | o |
+  """
+And display shows "!" on cell (2,2)
+When the player clicks right on the cell (2,2) 
+Then The cell should show : "."
+
+
+Scenario Outline: Untagging cells with no mine
+Given the following mock data: 
+  """
+  | o | o | * |
+  | o | o | o |
+  | * | o | o |
+  """
+And display shows "x" on cell (2,2)
+When the player clicks right on the cell (2,2) 
+Then The cell should show : "."
 
 Scenario Outline: Untagging cells - Adding to flagCounter
-Given the following mock data: "<boardData>"
+Given the following mock data: "<boardData>" 
+And the following display: "<boardDisplay>"
 When the player clicks right on the cell (2,2) 
-Then The display should show : "."
-And counter should show: "<flagCounter>"
+Then The counter should show: "<flagCounter>"
 
 Examples: 
-|  boardData  |  flagCounter |
-| ooo-ooo-ooo |            0 | 
-| *oo-ooo-ooo |            1 | 
-| *oo-ooo-oo* |            2 | 
-| *o*-ooo-o*o |            3 | 
+|  boardData  | boardDisplay | flagCounter |
+| ooo-ooo-ooo |  ...-.x.-... |           0 | 
+| ooo-o*o-ooo |  ...-.!.-... |           1 | 
+| *oo-ooo-oo* |  ...-.x.-... |           2 | 
+| *o*-ooo-o*o |  !..-.x.-... |           2 | 
 
 
 #---------- general scenarios  ----------#
@@ -230,6 +250,7 @@ Scenario: Cell is untagged
 Given cell display is "x"
 And player clicks right on cell
 Then cell should be enabled
+And cell display should show "."
 
 
 Scenario: Cell is uncovered
