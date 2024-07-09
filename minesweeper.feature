@@ -183,6 +183,7 @@ Given the player presses on "smileyIcon" button
 Then timer should be "000"
 And all cells should be enabled
 And all cells should be covered
+And "smileyIcon" status status should change to "normal"
 
 
 Scenario Outline: Winning the game
@@ -195,7 +196,7 @@ Given the player reveals a cell
 Then cells should be covered
 And all cells should be enabled
 And the timer should start
-And "smileyIcon" status should change to "normal"
+And "smileyIcon" status status should be "normal"
 
 
 Scenario: Game starts - By tagging a cell
@@ -203,7 +204,7 @@ Given the player taggs a cell
 Then cells should be covered
 And all cells chould be enabled
 And the timer should start
-And "smileyIcon" status should change to "normal"
+And "smileyIcon" status should be "normal"
 
 
 Scenario: Game ends - By player losing
