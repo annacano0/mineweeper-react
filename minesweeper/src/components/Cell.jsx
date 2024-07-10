@@ -1,28 +1,46 @@
 'use client'
 import { useState } from 'react';
 
-export default function Cell({cell}) {
-    const [isUncovered, setIsUncovered]= useState(false);
-    const [isTagged, setIsFlagged]= useState(false);
-    const hasMine=cell.hasMine
+function getCellContent(hasMine, adjacentMines){
+    let content=''
+    if(hasMine) content='mine';
+    else{
+        if(adjacentMines>0) content=adjacentMines
+    }
+    return content
+}
+
+export default function Cell({ cell }) {
+    const [isUncovered, setIsUncovered] = useState(false);
+    const [isTagged, setIsFlagged] = useState(false);
+    const [isBlocked, setIsBlocked] = useState(false)
+    const hasMine = cell.hasMine
+    const adjacentMines= cell.adjacentMines
+    const cellContent= getCellContent(hasMine, adjacentMines)
 
     const handleFlag = (event) => {
-        event.preventDefault();
-        if(isUncovered) setIsFlagged(false)
-        else setIsFlagged(true)
-        console.log('flag / unflag cell')
+        event.preventDefault();//so taht context menu doesn't pop up
+        if (!isBlocked) {
+            if (isTagged) setIsFlagged(false)
+            else {
+                setIsFlagged(true)
+                setIsBlocked(false)
+            }
+        }
     }
 
     const handleReveal = () => {
-        setIsUncovered(true)
-        console.log("reveal cell")
+        if (!isBlocked) {
+            setIsUncovered(true)
+            setIsBlocked(true)
+        }
     }
 
     return (
-        <section className="cell" onClick={handleReveal} onContextMenu={(event)=>handleFlag(event)} >
-            {<p>{cell.coordinates[0]+"," +cell.coordinates[1]}</p>}
+        <section className="cell" onClick={handleReveal} onContextMenu={(event) => handleFlag(event)} >
+            {isUncovered === true && (cellContent)}            
         </section>
-    ); 
+    );
 
-    
+
 }
