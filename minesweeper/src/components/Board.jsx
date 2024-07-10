@@ -2,9 +2,12 @@
 import Cell from './Cell.jsx';
 import { useState } from 'react';
 
+function addMinesToBoard(board){// TODO: implement this with random 0 or 1
+    return board
+}
 
 function generateBoard(rows, columns, mines) { //TODO: modify how mines are added
-  let newBoard = [];
+  let emptyBoard = [];
   let minesLeftToAdd = mines
   for (let i = 0; i <= rows - 1; i++) {
     let newRow = [];
@@ -23,9 +26,10 @@ function generateBoard(rows, columns, mines) { //TODO: modify how mines are adde
       };
       newRow.push(newCell);
     }
-    newBoard.push(newRow);
+    emptyBoard.push(newRow);
   }
-  return newBoard;
+  let boardWithMines= addMinesToBoard(emptyBoard)
+  return boardWithMines;
 }
 
 export default function Board({rows, columns, mines}) {
