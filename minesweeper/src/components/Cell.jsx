@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 function getCellContent(hasMine, adjacentMines){
     let content=''
-    if(hasMine) content='mine';
+    if(hasMine === 1) content='mine';
     else{
         if(adjacentMines>0) content=adjacentMines
     }
@@ -14,9 +14,7 @@ export default function Cell({ cell }) {
     const [isUncovered, setIsUncovered] = useState(false);
     const [isTagged, setIsFlagged] = useState(false);
     const [isBlocked, setIsBlocked] = useState(false)
-    const hasMine = cell.hasMine
-    const adjacentMines= cell.adjacentMines
-    const cellContent= getCellContent(hasMine, adjacentMines)
+    const cellContent= getCellContent(cell.hasMine, cell.adjacentMines)
 
     const handleFlag = (event) => {
         event.preventDefault();//so taht context menu doesn't pop up
