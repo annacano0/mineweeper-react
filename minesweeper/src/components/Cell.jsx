@@ -1,44 +1,47 @@
-'use client'
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
-function getCellContent(hasMine, adjacentMines){
-    let content=''
-    if(hasMine === 1) content='mine';
-    else{
-        if(adjacentMines>0) content=adjacentMines
-    }
-    return content
+function getCellContent(hasMine, adjacentMines) {
+  if (hasMine) {
+    return <img className="game-icon" src="img/boom.png" alt="boom" />;
+  }
+  if (adjacentMines > 0) {
+    return <p>{adjacentMines}</p>;
+  }
+  return null;
 }
 
 export default function Cell({ cell }) {
-    const [isUncovered, setIsUncovered] = useState(false);
-    const [isTagged, setIsFlagged] = useState(false);
-    const [isBlocked, setIsBlocked] = useState(false)
-    const cellContent= getCellContent(cell.hasMine, cell.adjacentMines)
+  const [isUncovered, setIsUncovered] = useState(false);
+  const [isFlagged, setIsFlagged] = useState(false);
+  let isDisabled = false;
 
-    const handleFlag = (event) => {
-        event.preventDefault();//so taht context menu doesn't pop up
-        if (!isBlocked) {
-            if (isTagged) setIsFlagged(false)
-            else {
-                setIsFlagged(true)
-                setIsBlocked(false)
-            }
-        }
+  const handleFlag = (event) => {
+    event.preventDefault(); //so taht context menu doesn't pop up
+    if (isFlagged) {
+      setIsFlagged(false);
+      isDisabled = true;
+    } else {
+      setIsFlagged(true);
+      isDisabled = true;
     }
+  };
 
-    const handleReveal = () => {
-        if (!isBlocked) {
-            setIsUncovered(true)
-            setIsBlocked(true)
-        }
-    }
+  const handleReveal = () => {
+    setIsUncovered(true);
+    isDisabled = false;
+  };
 
-    return (
-        <section className="cell" onClick={handleReveal} onContextMenu={(event) => handleFlag(event)} >
-            {isUncovered === true && (cellContent)}            
+  return (
+    <>
+{!isUncovered ? (
+        <section className="cell" onClick={handleReveal} onContextMenu={(event) => handleFlag(event)}>
+          {isFlagged && <img className="game-icon" src="../img/flag.png" alt="flag" />}
         </section>
-    );
-
-
+      ) : (
+        <section className="cell uncovered">
+          {getCellContent(cell.hasMine, cell.adjacentMines)}
+        </section>
+      )}    </>
+  );
 }

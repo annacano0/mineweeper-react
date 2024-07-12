@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
 *{
     margin: 0px;
     padding: 0px;
+    font-family: "Pixelify Sans", sans-serif;
 }
 body{
     background-color: #222;
@@ -13,15 +16,6 @@ h1{
     margin: auto auto 30px auto;
 }
 
-.cell{
-    width: 30px;
-    height: 30px;
-    margin: 3px;
-    background-color:#DD2D4A;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-}
 .board-row{
     display: flex;
 }
@@ -31,4 +25,26 @@ h1{
     width: fit-content;
     margin: auto;
     width:fit-content;
+}
+
+.cell{
+    width: 25px;
+    height: 25px;
+    margin: 3px;
+    background-color:#BADEFC;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border: #BADEFC 4px outset;
+}
+
+.uncovered{
+    background-color:#2e4057;
+    border: #4e6380 4px outset;
+
+
+}
+
+.game-icon{
+    width: 20px;
 }
