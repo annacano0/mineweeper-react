@@ -5,15 +5,30 @@
     padding: 0px;
     font-family: "Pixelify Sans", sans-serif;
 }
-body{
+body {
     background-color: #222;
     color: white;
     padding: 20px;
-}
+    background-image: url('/img/camo.jpg');
+    background-repeat:initial ;
+  }
+
+  .game-header{
+    height: 120px;
+
+  }
+  
 
 h1{
     width:fit-content;
     margin: auto auto 30px auto;
+    color: rgb(114, 20, 20);
+    font-size: 35px;
+    padding: 10px 20px;
+    background-color:#959595;
+    border: #c2c2c2 4px outset;
+    animation: bigger 3s infinite;
+
 }
 
 .board-row{
@@ -23,24 +38,27 @@ h1{
 .board{
     background-color: rgb(4, 47, 84);
     width: fit-content;
-    margin: auto;
     width:fit-content;
+    background-color:#959595;
+    border: #c2c2c2 4px outset;
+    padding: 3px;
+    margin: auto;
 }
 
 .cell{
     width: 25px;
     height: 25px;
     margin: 3px;
-    background-color:#BADEFC;
+    background-color:#959595;
     display:flex;
     align-items: center;
     justify-content: center;
-    border: #BADEFC 4px outset;
+    border: #c2c2c2 4px outset;
 }
 
 .uncovered{
     background-color:#2e4057;
-    border: #4e6380 4px outset;
+    border: #2e4057 4px solid;
 
 
 }
@@ -48,3 +66,9 @@ h1{
 .game-icon{
     width: 20px;
 }
+
+/* ANIMACIONES */
+
+@keyframes bigger {
+    50% {font-size: 50px;}
+  }
