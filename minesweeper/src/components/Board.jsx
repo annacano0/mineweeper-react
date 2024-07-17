@@ -79,7 +79,7 @@ export default function Board({rows, columns, mines}) {
       {board.map((row, rowIndex) => (
           <section key={rowIndex} className="board-row">
             {row.map((cell, columnIndex) => (
-              <Cell key={`${rowIndex}-${columnIndex}`} cell={cell}></Cell>
+              <Cell key={columnIndex} cell={cell}></Cell>
             ))}
           </section>
         ))}
